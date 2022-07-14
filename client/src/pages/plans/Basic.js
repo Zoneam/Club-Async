@@ -5,20 +5,15 @@ const Basic = ({ history, match }) => {
   const [state, setState] = useContext(UserContext);
 
   useEffect(() => {
-    let result = [];
+    let result = '';
     const check = () =>
-      state &&
-      state.user &&
-      state.user.subscriptions &&
-      state.user.subscriptions.map((sub) => {
-        result.push(sub.plan.nickname);
-        console.log('Plans',sub.plan)
-      });
+      result = state.user.subscriptions[0] ? state.user.subscriptions[0].plan.nickname.toUpperCase(): '';
     check();
 
-    // console.log("MATCH", match);
-    const plan = match.path.split("/")[1].toUpperCase(); // basic
-    if (result.includes(plan)) {
+    const plan = match.path.split("/")[1].toUpperCase(); // premium
+    console.log("MATCH", plan, result);
+    if (result !== plan) {
+      console.log("NO MATCH")
       history.push("/");
     }
   }, [state && state.user]);
@@ -27,7 +22,7 @@ const Basic = ({ history, match }) => {
     <Fragment>
       <div className="container-fluid">
         <div className="row py-5 bg-light text-center">
-          <h1 className="display-4 fw-bold">BASIC</h1>
+          <h1 className="display-4 fw-bold">Your Premium Subscription</h1>
           <p className="lead">Here are your 5 exclusive stocks of this month</p>
         </div>
       </div>

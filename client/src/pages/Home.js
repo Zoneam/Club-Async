@@ -1,4 +1,5 @@
 import axios from "axios";
+import LinkSubmit from "../components/LinkSubmit";
 import React, { useEffect, useState, useContext } from "react";
 import PriceCard from "../components/cards/PriceCard";
 import { UserContext } from "../context";
@@ -61,6 +62,7 @@ const Home = ({ history }) => {
   };
 
   return (
+    (state.user.email !== 'admin@gmail.com')?(
     <div className="container-fluid">
       <div className="row col-md-6 offset-md-3 text-center">
         <h1 className="pt-5 fw-bold">
@@ -81,7 +83,8 @@ const Home = ({ history }) => {
           ))}
       </div>
     </div>
-  );
+    ):<LinkSubmit/>
+  )
 };
 
 export default Home;

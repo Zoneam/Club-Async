@@ -22,7 +22,7 @@ function App() {
         }}
       />
       <Switch>
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" component={Home}/>
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
         <AuthRoute exact path="/stripe/success" component={StripeSuccess} />
@@ -30,7 +30,9 @@ function App() {
         <AuthRoute exact path="/account" component={Account} />
         <AuthRoute exact path="/premium" component={Premium} />
       </Switch>
+      {/* {(state.user.email === 'admin@gmail.com')?<AuthRoute exact path="/premium" component={Premium} />:null} */}
     </Router>
+    
   );
 }
 

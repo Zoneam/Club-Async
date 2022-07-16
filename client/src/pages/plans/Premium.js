@@ -1,19 +1,29 @@
-import React, { Fragment, useEffect, useContext } from "react";
+import React, { Fragment, useEffect, useContext, useState } from "react";
 import { UserContext } from "../../context";
+import axios from "axios";
 
 const Basic = ({ history, match }) => {
   const [state, setState] = useContext(UserContext);
+  const [link, setLink] = useState("");
 
   useEffect(() => {
-    let result = '';
+    let result = "";
     const check = () =>
-      result = state.user.subscriptions[0] ? state.user.subscriptions[0].plan.nickname.toUpperCase(): '';
+      (result = state.user.subscriptions[0]
+        ? state.user.subscriptions[0].plan.nickname.toUpperCase()
+        : "");
     check();
+
+    async function getLink() {
+      const link = await axios.get("/getlink");
+      setLink(link.data.link);
+    }
+    getLink();
 
     const plan = match.path.split("/")[1].toUpperCase(); // premium
     console.log("MATCH", plan, result);
     if (result !== plan) {
-      console.log("NO MATCH")
+      console.log("NO MATCH");
       history.push("/");
     }
   }, [state && state.user]);
@@ -23,37 +33,20 @@ const Basic = ({ history, match }) => {
       <div className="container-fluid">
         <div className="row py-5 bg-light text-center">
           <h1 className="display-4 fw-bold">Your Premium Subscription</h1>
-          <p className="lead">Here are your 5 exclusive stocks of this month</p>
+          <p className="lead">Here is your Zoom link</p>
         </div>
       </div>
-
-      <div className="container py-5">
-        <div className="row">
-          <div className="col-md-8 p-5 rounded bg-dark text-light">
-            <ul className="lead">
-              <li>Tesla</li>
-              <li>Microsoft</li>
-              <li>PayPal</li>
-              <li>Square</li>
-              <li>Alibaba</li>
-            </ul>
-          </div>
-
-          <div className="col-md-4">
-            <h4>Market analysis</h4>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Accusantium ratione pariatur ab unde voluptatem ea, quae veniam
-              aperiam sint porro aliquid animi eveniet, culpa id reiciendis vel
-              nihil veritatis qui.
-            </p>
-            <h4>Email support</h4>
-            <p>subscriptions@domain.com</p>
-            <h4>Help center</h4>
-            1300 123 456
-          </div>
+      {link ? (
+        <div>
+          <ul class="list-group">
+            <a href={link} class="badge badge-info">
+              <li class="list-group-item list-group-item-primary">{link}</li>
+            </a>
+          </ul>
         </div>
-      </div>
+      ) : (
+        ""
+      )}
     </Fragment>
   );
 };
